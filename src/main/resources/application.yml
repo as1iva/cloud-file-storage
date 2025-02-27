@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cloud-file-storage
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yml
+
+  jpa:
+    hibernate:
+      ddl-auto: none
