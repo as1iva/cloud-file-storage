@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.request.UserRegistrationRequestDto;
 import org.as1iva.dto.response.UserRegistrationResponseDto;
 import org.as1iva.entity.User;
-import org.as1iva.mapper.UserMapper;
+import org.as1iva.mapper.UserRegistrationMapper;
 import org.as1iva.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,6 @@ public class AuthService {
                 .password(encodedPassword)
                 .build();
 
-        return UserMapper.INSTANCE.toDto(userRepository.save(user));
+        return UserRegistrationMapper.INSTANCE.toDto(userRepository.save(user));
     }
 }
