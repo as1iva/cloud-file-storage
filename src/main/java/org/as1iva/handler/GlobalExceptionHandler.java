@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBadCredentialsException(DataIntegrityViolationException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
                 "status", 403,
-                "message", e.getMessage()
+                "message", "Password or username are incorrect"
         ));
     }
 
