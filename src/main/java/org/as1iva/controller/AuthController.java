@@ -1,7 +1,9 @@
 package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.as1iva.dto.request.UserLoginRequestDto;
 import org.as1iva.dto.request.UserRegistrationRequestDto;
+import org.as1iva.dto.response.UserLoginResponseDto;
 import org.as1iva.dto.response.UserRegistrationResponseDto;
 import org.as1iva.entity.User;
 import org.as1iva.exception.InvalidDataException;
@@ -25,5 +27,11 @@ public class AuthController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signUp(user));
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<UserLoginResponseDto> signIn(@RequestBody UserLoginRequestDto user) {
+
+        return ResponseEntity.ok(authService.signIn(user));
     }
 }
