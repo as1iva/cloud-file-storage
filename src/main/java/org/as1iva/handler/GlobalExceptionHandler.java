@@ -13,6 +13,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "status", 409,
+                "message", "Username is already taken"
+        ));
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
