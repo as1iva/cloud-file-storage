@@ -1,5 +1,6 @@
 package org.as1iva.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.security.SecurityUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
+                )
+
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/sign-out")
+                        .logoutSuccessHandler(((request, response, authentication) -> response
+                                .setStatus(HttpServletResponse.SC_NO_CONTENT)))
+                        .deleteCookies("JSESSIONID")
                 )
 
                 .sessionManagement(session -> session
