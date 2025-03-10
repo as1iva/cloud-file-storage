@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException() {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
-                "status", 403,
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "status", 401,
                 "message", "Password or username are incorrect"
         ));
     }
