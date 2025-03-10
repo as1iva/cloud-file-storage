@@ -6,7 +6,6 @@ import org.as1iva.dto.request.UserRegistrationRequestDto;
 import org.as1iva.dto.response.UserLoginResponseDto;
 import org.as1iva.dto.response.UserRegistrationResponseDto;
 import org.as1iva.entity.User;
-import org.as1iva.exception.InvalidDataException;
 import org.as1iva.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +20,6 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<UserRegistrationResponseDto> signUp(@RequestBody UserRegistrationRequestDto user) {
-
-        if (!user.password().equals(user.confirmPassword())) {
-            throw new InvalidDataException("Passwords doesn't match");
-        }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signUp(user));
     }
 
