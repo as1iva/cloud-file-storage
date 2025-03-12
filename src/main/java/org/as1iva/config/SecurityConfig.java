@@ -39,7 +39,6 @@ public class SecurityConfig {
                         .logoutUrl("/api/auth/sign-out")
                         .logoutSuccessHandler(((request, response, authentication) -> response
                                 .setStatus(HttpServletResponse.SC_NO_CONTENT)))
-                        .deleteCookies("JSESSIONID")
                 )
 
                 .sessionManagement(session -> session
