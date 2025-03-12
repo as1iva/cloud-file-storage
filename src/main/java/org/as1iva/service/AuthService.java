@@ -1,5 +1,6 @@
 package org.as1iva.service;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.request.UserLoginRequestDto;
 import org.as1iva.dto.request.UserRegistrationRequestDto;
@@ -13,9 +14,13 @@ import org.as1iva.security.SecurityUserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @Transactional
@@ -46,6 +51,14 @@ public class AuthService {
                         userLoginRequestDto.password()
                 )
         );
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getRequest().getSession();
+
+        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
         SecurityUserDetails principal = (SecurityUserDetails) authentication.getPrincipal();
 
