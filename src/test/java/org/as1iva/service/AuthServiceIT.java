@@ -14,8 +14,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -61,10 +59,11 @@ public class AuthServiceIT {
 
         authService.signUp(userRegistrationRequestDto);
 
-        Optional<User> user = userRepository.findByUsername(TEST_USERNAME);
+        User user = userRepository.findByUsername(TEST_USERNAME)
+                .orElseThrow(() -> new AssertionError("User not found in database"));
 
-        assertThat(user).isPresent();
-        assertThat(user.get().getUsername()).isEqualTo(TEST_USERNAME);
+        assertThat(user).isNotNull();
+        assertThat(user.getUsername()).isEqualTo(TEST_USERNAME);
     }
 
     @Test
