@@ -22,9 +22,26 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
-    restart: unless-stopped
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    env_file:
+      - .env
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address :9090
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    volumes:
+      - minio_volume:/data
+
+
 volumes:
   postgres_volume:
+  minio_volume:
 
 networks:
   cloud_network:
