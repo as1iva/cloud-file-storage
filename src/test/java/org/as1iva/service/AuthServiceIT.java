@@ -1,6 +1,6 @@
 package org.as1iva.service;
 
-import org.as1iva.dto.request.UserRegistrationRequestDto;
+import org.as1iva.dto.request.UserRequestDto;
 import org.as1iva.entity.User;
 import org.as1iva.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +52,7 @@ public class AuthServiceIT {
 
     @Test
     void signUpUser_shouldReturnUserIfCredentialsUnique() {
-        UserRegistrationRequestDto userRegistrationRequestDto = UserRegistrationRequestDto.builder()
+        UserRequestDto userRegistrationRequestDto = UserRequestDto.builder()
                 .username(TEST_USERNAME)
                 .password(TEST_PASSWORD)
                 .build();
@@ -68,7 +68,7 @@ public class AuthServiceIT {
 
     @Test
     void shouldThrowExceptionWhenUsernameNotUnique() {
-        UserRegistrationRequestDto userRegistrationRequestDto = UserRegistrationRequestDto.builder()
+        UserRequestDto userRegistrationRequestDto = UserRequestDto.builder()
                 .username(TEST_USERNAME)
                 .password(TEST_PASSWORD)
                 .build();

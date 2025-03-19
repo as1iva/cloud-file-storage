@@ -1,10 +1,8 @@
 package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.as1iva.dto.request.UserLoginRequestDto;
-import org.as1iva.dto.request.UserRegistrationRequestDto;
-import org.as1iva.dto.response.UserLoginResponseDto;
-import org.as1iva.dto.response.UserRegistrationResponseDto;
+import org.as1iva.dto.request.UserRequestDto;
+import org.as1iva.dto.response.UserResponseDto;
 import org.as1iva.service.AuthService;
 import org.as1iva.util.ValidationUtil;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<UserRegistrationResponseDto> signUp(@RequestBody UserRegistrationRequestDto user) {
+    public ResponseEntity<UserResponseDto> signUp(@RequestBody UserRequestDto user) {
 
         ValidationUtil.checkUsername(user.username());
 
@@ -27,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<UserLoginResponseDto> signIn(@RequestBody UserLoginRequestDto user) {
+    public ResponseEntity<UserResponseDto> signIn(@RequestBody UserRequestDto user) {
 
         ValidationUtil.checkUsername(user.username());
 
