@@ -21,5 +21,11 @@ spring:
       host: localhost
       port: 6379
 
+  minio:
+    url: ${MINIO_URL}
+    access-key: ${MINIO_ROOT_USER}
+    secret-key: ${MINIO_ROOT_PASSWORD}
+    bucket-name: ${MINIO_BUCKET_NAME}
+
   config:
     import: optional:file:.env
