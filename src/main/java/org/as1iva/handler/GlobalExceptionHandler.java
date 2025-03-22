@@ -1,6 +1,7 @@
 package org.as1iva.handler;
 
 import org.as1iva.exception.InvalidDataException;
+import org.as1iva.exception.InternalServerException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleException() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "status", 500,
+                "message", "Internal server error"
+        ));
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<?> handleInternalServerException() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                 "status", 500,
                 "message", "Internal server error"
