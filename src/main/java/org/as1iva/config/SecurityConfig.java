@@ -2,6 +2,7 @@ package org.as1iva.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.as1iva.security.CustomAuthEntryPoint;
 import org.as1iva.security.SecurityUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,8 @@ public class SecurityConfig {
 
     private final SecurityUserDetailsService userDetailsService;
 
+    private final CustomAuthEntryPoint authEntryPoint;
+
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
@@ -39,6 +42,10 @@ public class SecurityConfig {
                         .logoutUrl("/api/auth/sign-out")
                         .logoutSuccessHandler(((request, response, authentication) -> response
                                 .setStatus(HttpServletResponse.SC_NO_CONTENT)))
+                )
+
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authEntryPoint)
                 )
 
                 .sessionManagement(session -> session
