@@ -2,6 +2,7 @@ package org.as1iva.service;
 
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
+import org.as1iva.exception.DataExistsException;
 import org.as1iva.exception.DataNotFoundException;
 import org.as1iva.exception.InternalServerException;
 import org.as1iva.util.PathUtil;
@@ -24,6 +25,10 @@ public class DirectoryService {
 
         if (!parentPath.isEmpty() && !isDirectoryExists(completeParentPath)) {
             throw new DataNotFoundException("Parent directory does not exist");
+        }
+
+        if (isDirectoryExists(completePath)) {
+            throw new DataExistsException("Directory already exists");
         }
 
         try {
