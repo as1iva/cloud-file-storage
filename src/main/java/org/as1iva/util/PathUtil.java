@@ -7,7 +7,7 @@ public class PathUtil {
 
     public String getUserPath(String path, Long userId) {
 
-        String defaultFolder = String.format("user-%d-files/", userId + 1);
+        String defaultFolder = String.format("user-%d-files/", userId);
 
         return defaultFolder + path;
     }
