@@ -1,5 +1,6 @@
 package org.as1iva.handler;
 
+import org.as1iva.exception.DataNotFoundException;
 import org.as1iva.exception.InvalidDataException;
 import org.as1iva.exception.InternalServerException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -43,6 +44,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                 "status", 500,
                 "message", "Internal server error"
+        ));
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<?> handleDataNotFoundException(DataNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "status", 404,
+                "message", e.getMessage()
         ));
     }
 
