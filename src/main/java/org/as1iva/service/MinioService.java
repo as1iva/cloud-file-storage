@@ -38,6 +38,13 @@ public class MinioService {
                 .build());
     }
 
+    public void statObject(String path) throws Exception {
+        minioClient.statObject(StatObjectArgs.builder()
+                .bucket(bucketName)
+                .object(path)
+                .build());
+    }
+
     public void createEmptyDirectory(String path) throws Exception {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(bucketName)
