@@ -45,6 +45,18 @@ public class DirectoryService {
 
     }
 
+    public void createUserDirectory(Long userId) {
+        String userDirectoryName = PathUtil.getUserPath(userId);
+
+        if (!isDirectoryExists(userDirectoryName)) {
+            try {
+                minioService.createEmptyDirectory(userDirectoryName);
+            } catch (Exception e) {
+                throw new InternalServerException();
+            }
+        }
+    }
+
     private boolean isDirectoryExists(String path) {
         try {
             minioService.statObject(path);
