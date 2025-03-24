@@ -1,5 +1,6 @@
 package org.as1iva.handler;
 
+import org.as1iva.exception.DataExistsException;
 import org.as1iva.exception.DataNotFoundException;
 import org.as1iva.exception.InvalidDataException;
 import org.as1iva.exception.InternalServerException;
@@ -60,6 +61,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                 "status", 500,
                 "message", "Internal server error"
+        ));
+    }
+
+    @ExceptionHandler(DataExistsException.class)
+    public ResponseEntity<?> handleDataExistsException(DataExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "status", 409,
+                "message", e.getMessage()
         ));
     }
 }
