@@ -25,7 +25,7 @@ public class FileService {
 
         try (InputStream object = minioService.getObject(completePath)) {
             return ResourceResponseDto.builder()
-                    .path(PathUtil.getFileRoot(path))
+                    .path(PathUtil.getFilePath(path))
                     .name(PathUtil.getFileName(path))
                     .size((long) object.readAllBytes().length)
                     .type(FILE_TYPE)

@@ -23,7 +23,7 @@ public class PathUtil {
         }
     }
 
-    public String getFileRoot(String path) {
+    public String getFilePath(String path) {
 
         int lastIndex = path.lastIndexOf("/");
 
@@ -41,10 +41,10 @@ public class PathUtil {
         return getFileName(pathWithoutLastSlash);
     }
 
-    public String getDirectoryRoot(String path) {
+    public String getDirectoryPath(String path) {
 
         String pathWithoutLastSlash = path.replaceAll("/+$", "");
 
-        return getFileRoot(pathWithoutLastSlash);
+        return getFilePath(pathWithoutLastSlash);
     }
 }

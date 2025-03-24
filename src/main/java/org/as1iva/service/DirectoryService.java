@@ -23,7 +23,7 @@ public class DirectoryService {
             minioService.createEmptyDirectory(completePath);
 
             return ResourceResponseDto.builder()
-                    .path(PathUtil.getDirectoryRoot(path))
+                    .path(PathUtil.getDirectoryPath(path))
                     .name(PathUtil.getDirectoryName(path))
                     .type(DIRECTORY_TYPE)
                     .build();
