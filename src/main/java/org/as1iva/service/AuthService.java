@@ -24,6 +24,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final DirectoryService directoryService;
+
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -38,7 +40,11 @@ public class AuthService {
                 .password(encodedPassword)
                 .build();
 
-        return UserMapper.INSTANCE.toDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+
+        directoryService.createUserDirectory(savedUser.getId());
+
+        return UserMapper.INSTANCE.toDto(savedUser);
     }
 
     public UserResponseDto signIn(UserRequestDto userLoginRequestDto) {
