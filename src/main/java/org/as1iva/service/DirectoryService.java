@@ -32,4 +32,14 @@ public class DirectoryService {
             throw new InternalServerException();
         }
     }
+
+    private boolean isDirectoryExists(String path) {
+        try {
+            minioService.statObject(path);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
