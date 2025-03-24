@@ -2,6 +2,7 @@ package org.as1iva.service;
 
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
+import org.as1iva.exception.DataNotFoundException;
 import org.as1iva.exception.InternalServerException;
 import org.as1iva.util.PathUtil;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,12 @@ public class DirectoryService {
 
     public ResourceResponseDto createDirectory(String path, Long userId) {
         String completePath = PathUtil.getUserPath(path, userId);
+        String parentPath = PathUtil.getDirectoryPath(path);
+        String completeParentPath = PathUtil.getUserPath(parentPath, userId);
+
+        if (!parentPath.isEmpty() && !isDirectoryExists(completeParentPath)) {
+            throw new DataNotFoundException("Parent directory does not exist");
+        }
 
         try {
             minioService.createEmptyDirectory(completePath);
