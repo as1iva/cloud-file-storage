@@ -10,12 +10,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class DirectoryController {
 
     private final DirectoryService directoryService;
+
+    @GetMapping("/directory")
+    public ResponseEntity<List<ResourceResponseDto>> getInfo(@RequestParam("path") String path,
+                                                         @AuthenticationPrincipal SecurityUserDetails userDetails) {
+
+        ValidationUtil.checkPath(path);
+
+        return ResponseEntity.ok(directoryService.getInfo(path, userDetails.getId()));
+    }
 
     @PostMapping("/directory")
     public ResponseEntity<ResourceResponseDto> createEmptyDirectory(@RequestParam("path") String path,
