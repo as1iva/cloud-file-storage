@@ -1,6 +1,7 @@
 package org.as1iva.service;
 
 import io.minio.*;
+import io.minio.messages.Item;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,14 @@ public class MinioService {
         minioClient.statObject(StatObjectArgs.builder()
                 .bucket(bucketName)
                 .object(path)
+                .build());
+    }
+
+    public Iterable<Result<Item>> getObjects(String path) {
+        return minioClient.listObjects(ListObjectsArgs.builder()
+                .bucket(bucketName)
+                .prefix(path)
+                .recursive(false)
                 .build());
     }
 
