@@ -33,16 +33,16 @@ public class DirectoryService {
 
         try {
             minioService.createEmptyDirectory(completePath);
-
-            return ResourceResponseDto.builder()
-                    .path(PathUtil.getDirectoryPath(path))
-                    .name(PathUtil.getDirectoryName(path))
-                    .type(DIRECTORY_TYPE)
-                    .build();
-
         } catch (Exception e) {
             throw new InternalServerException();
         }
+
+        return ResourceResponseDto.builder()
+                .path(PathUtil.getDirectoryPath(path))
+                .name(PathUtil.getDirectoryName(path))
+                .type(DIRECTORY_TYPE)
+                .build();
+
     }
 
     private boolean isDirectoryExists(String path) {
