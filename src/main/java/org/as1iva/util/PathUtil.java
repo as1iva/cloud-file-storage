@@ -12,6 +12,10 @@ public class PathUtil {
         return defaultFolder + path;
     }
 
+    public String getUserPath(Long userId) {
+        return String.format("user-%d-files/", userId);
+    }
+
     public String getFileName(String path) {
 
         int lastIndex = path.lastIndexOf("/");
