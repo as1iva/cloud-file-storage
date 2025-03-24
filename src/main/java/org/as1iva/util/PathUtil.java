@@ -47,4 +47,8 @@ public class PathUtil {
 
         return getFilePath(pathWithoutLastSlash);
     }
+
+    public boolean isDirectory(String path) {
+        return path.endsWith("/");
+    }
 }
