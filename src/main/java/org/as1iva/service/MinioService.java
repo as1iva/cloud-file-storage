@@ -46,11 +46,11 @@ public class MinioService {
                 .build());
     }
 
-    public Iterable<Result<Item>> getObjects(String path) {
+    public Iterable<Result<Item>> getObjects(String path, boolean recursive) {
         return minioClient.listObjects(ListObjectsArgs.builder()
                 .bucket(bucketName)
                 .prefix(path)
-                .recursive(false)
+                .recursive(recursive)
                 .build());
     }
 

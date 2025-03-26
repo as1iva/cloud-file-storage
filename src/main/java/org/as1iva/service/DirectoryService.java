@@ -32,7 +32,7 @@ public class DirectoryService {
             throw new DataNotFoundException("Directory does not exist");
         }
 
-        Iterable<Result<Item>> objects = minioService.getObjects(completePath);
+        Iterable<Result<Item>> objects = minioService.getObjects(completePath, false);
         List<ResourceResponseDto> resources = new ArrayList<>();
 
         for (Result<Item> object : objects) {
