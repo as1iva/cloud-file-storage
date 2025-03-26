@@ -28,7 +28,7 @@ public class DirectoryService {
     public List<ResourceResponseDto> getInfo(String path, Long userId) {
         String completePath = PathUtil.getUserPath(path, userId);
 
-        if (!path.isEmpty() && !isDirectoryExists(completePath)) {
+        if (!path.isEmpty() && !minioService.doesResourceExist(completePath)) {
             throw new DataNotFoundException("Directory does not exist");
         }
 
@@ -76,11 +76,11 @@ public class DirectoryService {
         String parentPath = PathUtil.getDirectoryPath(path);
         String completeParentPath = PathUtil.getUserPath(parentPath, userId);
 
-        if (!parentPath.isEmpty() && !isDirectoryExists(completeParentPath)) {
+        if (!parentPath.isEmpty() && !minioService.doesResourceExist(completeParentPath)) {
             throw new DataNotFoundException("Parent directory does not exist");
         }
 
-        if (isDirectoryExists(completePath)) {
+        if (minioService.doesResourceExist(completePath)) {
             throw new DataExistsException("Directory already exists");
         }
 
@@ -101,7 +101,7 @@ public class DirectoryService {
     public void createUserDirectory(Long userId) {
         String userDirectoryName = PathUtil.getUserPath(userId);
 
-        if (!isDirectoryExists(userDirectoryName)) {
+        if (!minioService.doesResourceExist(userDirectoryName)) {
             try {
                 minioService.createEmptyDirectory(userDirectoryName);
             } catch (Exception e) {
