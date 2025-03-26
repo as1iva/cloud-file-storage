@@ -1,6 +1,8 @@
 package org.as1iva.service;
 
+import io.minio.Result;
 import io.minio.errors.ErrorResponseException;
+import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.exception.DataNotFoundException;
@@ -43,6 +45,30 @@ public class FileService {
 
         }  catch (ErrorResponseException e) {
             throw new DataNotFoundException("Resource not found");
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
+    }
+
+    public void delete(String path, Long userId) {
+        String completePath = PathUtil.getUserPath(path, userId);
+
+        if (!minioService.doesResourceExist(completePath)) {
+            throw new DataNotFoundException("Resource not found");
+        }
+
+        try {
+            if (PathUtil.isDirectory(path)) {
+                Iterable<Result<Item>> objects = minioService.getObjects(completePath, true);
+
+                for (Result<Item> object : objects) {
+                    String objectName = object.get().objectName();
+
+                    minioService.removeObject(objectName);
+                }
+            } else {
+                minioService.removeObject(completePath);
+            }
         } catch (Exception e) {
             throw new InternalServerException();
         }
