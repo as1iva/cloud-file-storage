@@ -7,10 +7,7 @@ import org.as1iva.service.FileService;
 import org.as1iva.util.ValidationUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -26,5 +23,16 @@ public class FileController {
         ValidationUtil.checkPath(path);
 
         return ResponseEntity.ok().body(fileService.getInfo(path, userDetails.getId()));
+    }
+
+    @DeleteMapping("/resource")
+    public ResponseEntity<Void> delete(@RequestParam("path") String path,
+                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
+
+        ValidationUtil.checkPath(path);
+
+        fileService.delete(path, userDetails.getId());
+
+        return ResponseEntity.noContent().build();
     }
 }
