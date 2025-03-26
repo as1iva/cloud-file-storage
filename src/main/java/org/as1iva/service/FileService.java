@@ -17,6 +17,8 @@ import java.io.InputStream;
 public class FileService {
 
     private final MinioService minioService;
+    
+    private final String DIRECTORY_TYPE = "DIRECTORY";
 
     private final String FILE_TYPE = "FILE";
 
@@ -24,6 +26,14 @@ public class FileService {
         String completePath = PathUtil.getUserPath(path, userId);
 
         try (InputStream object = minioService.getObject(completePath)) {
+            if (PathUtil.isDirectory(completePath)) {
+                return ResourceResponseDto.builder()
+                        .path(PathUtil.getDirectoryPath(path))
+                        .name(PathUtil.getDirectoryName(path))
+                        .type(DIRECTORY_TYPE)
+                        .build();
+            }
+
             return ResourceResponseDto.builder()
                     .path(PathUtil.getFilePath(path))
                     .name(PathUtil.getFileName(path))
@@ -32,7 +42,7 @@ public class FileService {
                     .build();
 
         }  catch (ErrorResponseException e) {
-            throw new DataNotFoundException("File not found");
+            throw new DataNotFoundException("Resource not found");
         } catch (Exception e) {
             throw new InternalServerException();
         }
