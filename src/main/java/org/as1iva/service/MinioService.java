@@ -62,6 +62,13 @@ public class MinioService {
                 .build());
     }
 
+    public void removeObject(String path) throws Exception {
+        minioClient.removeObject(RemoveObjectArgs.builder()
+                .bucket(bucketName)
+                .object(path)
+                .build());
+    }
+
     public boolean doesResourceExist(String path) {
         try {
             statObject(path);
