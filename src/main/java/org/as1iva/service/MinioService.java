@@ -61,4 +61,14 @@ public class MinioService {
                 .stream(new ByteArrayInputStream(new byte[] {}), 0, -1)
                 .build());
     }
+
+    public boolean doesResourceExist(String path) {
+        try {
+            statObject(path);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
