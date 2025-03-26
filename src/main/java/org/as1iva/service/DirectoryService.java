@@ -109,14 +109,4 @@ public class DirectoryService {
             }
         }
     }
-
-    private boolean isDirectoryExists(String path) {
-        try {
-            minioService.statObject(path);
-
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
