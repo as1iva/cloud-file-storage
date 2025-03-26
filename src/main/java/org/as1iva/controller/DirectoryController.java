@@ -25,7 +25,7 @@ public class DirectoryController {
 
         ValidationUtil.checkPath(path);
 
-        return ResponseEntity.ok(directoryService.getInfo(path, userDetails.getId()));
+        return ResponseEntity.ok(directoryService.getContentInfo(path, userDetails.getId()));
     }
 
     @PostMapping("/directory")

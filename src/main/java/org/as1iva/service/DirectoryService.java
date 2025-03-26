@@ -24,8 +24,7 @@ public class DirectoryService {
     private final String DIRECTORY_TYPE = "DIRECTORY";
     private final String FILE_TYPE = "FILE";
 
-
-    public List<ResourceResponseDto> getInfo(String path, Long userId) {
+    public List<ResourceResponseDto> getContentInfo(String path, Long userId) {
         String completePath = PathUtil.getUserPath(path, userId);
 
         if (!path.isEmpty() && !minioService.doesResourceExist(completePath)) {
