@@ -4,7 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
 import org.as1iva.service.FileService;
+import org.as1iva.util.PathUtil;
 import org.as1iva.util.ValidationUtil;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +39,19 @@ public class FileController {
         fileService.delete(path, userDetails.getId());
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/resource/download")
+    public ResponseEntity<Resource> download(@RequestParam("path") String path,
+                                             @AuthenticationPrincipal SecurityUserDetails userDetails) {
+
+        ValidationUtil.checkPath(path);
+
+        InputStreamResource object = fileService.download(path, userDetails.getId());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + PathUtil.getDownloadName(path))
+                .body(object);
     }
 }
