@@ -1,7 +1,6 @@
 package org.as1iva.service;
 
 import io.minio.Result;
-import io.minio.errors.ErrorResponseException;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
@@ -32,6 +31,10 @@ public class FileService {
     public ResourceResponseDto getInfo(String path, Long userId) {
         String completePath = PathUtil.getUserPath(path, userId);
 
+        if (!minioService.doesResourceExist(completePath)) {
+            throw new DataNotFoundException("Resource not found");
+        }
+
         try (InputStream object = minioService.getObject(completePath)) {
             if (PathUtil.isDirectory(completePath)) {
                 return ResourceResponseDto.builder()
@@ -48,8 +51,6 @@ public class FileService {
                     .type(FILE_TYPE)
                     .build();
 
-        }  catch (ErrorResponseException e) {
-            throw new DataNotFoundException("Resource not found");
         } catch (Exception e) {
             throw new InternalServerException();
         }
