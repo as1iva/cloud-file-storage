@@ -52,6 +52,15 @@ public class PathUtil {
         return getFilePath(pathWithoutLastSlash);
     }
 
+    public String getDownloadName(String path) {
+
+        if (isDirectory(path)) {
+            return getDirectoryName(path) + ".zip";
+        }
+
+        return getFileName(path);
+    }
+
     public boolean isDirectory(String path) {
         return path.endsWith("/");
     }
