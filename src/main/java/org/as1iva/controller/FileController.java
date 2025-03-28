@@ -34,7 +34,7 @@ public class FileController {
 
     @DeleteMapping("/resource")
     public ResponseEntity<Void> delete(@RequestParam("path") String path,
-                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
+                                       @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         ValidationUtil.checkPath(path);
 

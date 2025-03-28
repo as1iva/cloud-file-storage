@@ -25,7 +25,7 @@ import java.util.zip.ZipOutputStream;
 public class FileService {
 
     private final MinioService minioService;
-    
+
     private final String DIRECTORY_TYPE = "DIRECTORY";
 
     private final String FILE_TYPE = "FILE";

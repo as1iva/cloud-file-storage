@@ -59,7 +59,7 @@ public class MinioService {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(bucketName)
                 .object(path)
-                .stream(new ByteArrayInputStream(new byte[] {}), 0, -1)
+                .stream(new ByteArrayInputStream(new byte[]{}), 0, -1)
                 .build());
     }
 
