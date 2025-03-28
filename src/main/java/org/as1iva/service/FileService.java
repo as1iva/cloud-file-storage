@@ -97,6 +97,8 @@ public class FileService {
     private InputStreamResource downloadDirectory(String completePath, String path) {
         ByteArrayOutputStream zipBuffer = new ByteArrayOutputStream();
 
+        path = PathUtil.getDirectoryName(path) + "/";
+
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(zipBuffer)) {
             Iterable<Result<Item>> objects = minioService.getObjects(completePath, true);
 
