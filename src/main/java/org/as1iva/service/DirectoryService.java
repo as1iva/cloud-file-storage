@@ -43,23 +43,24 @@ public class DirectoryService {
                 }
 
                 String objectName = item.objectName();
-                Long size = item.size();
-                String type = FILE_TYPE;
-                String name = PathUtil.getFileName(objectName);
+
+                ResourceResponseDto resource;
 
                 if (item.isDir()) {
-                    size = null;
-                    type = DIRECTORY_TYPE;
-                    name = PathUtil.getDirectoryName(objectName);
+                    resource = ResourceResponseDto.builder()
+                            .path(path)
+                            .name(PathUtil.getDirectoryName(objectName) + "/")
+                            .type(DIRECTORY_TYPE)
+                            .build();
+                } else {
+                    resource = ResourceResponseDto.builder()
+                            .path(path)
+                            .name(PathUtil.getFileName(objectName))
+                            .size(item.size())
+                            .type(FILE_TYPE)
+                            .build();
                 }
-
-                ResourceResponseDto resource = ResourceResponseDto.builder()
-                        .path(path)
-                        .name(name)
-                        .size(size)
-                        .type(type)
-                        .build();
-
+                
                 resources.add(resource);
             } catch (Exception e) {
                 throw new InternalServerException();
