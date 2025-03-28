@@ -11,8 +11,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -57,5 +59,13 @@ public class FileController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString())
                 .body(object);
+    }
+
+    @PostMapping("/resource")
+    public ResponseEntity<List<ResourceResponseDto>> upload(@RequestParam("path") String path,
+                                                            @AuthenticationPrincipal SecurityUserDetails userDetails,
+                                                            @RequestPart("object") List<MultipartFile> file) {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(fileService.upload(file, path, userDetails.getId()));
     }
 }
