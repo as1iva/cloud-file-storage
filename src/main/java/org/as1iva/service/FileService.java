@@ -10,10 +10,12 @@ import org.as1iva.util.PathUtil;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -135,5 +137,48 @@ public class FileService {
         } catch (Exception e) {
             throw new InternalServerException();
         }
+    }
+
+    public List<ResourceResponseDto> upload(List<MultipartFile> files, String path, Long userId) {
+        String completePath = PathUtil.getUserPath(path, userId);
+
+        List<ResourceResponseDto> resources = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
+
+            try (InputStream input = file.getInputStream()) {
+
+                if (!minioService.doesResourceExist(completePath + directoryName)) {
+                    minioService.createEmptyDirectory(completePath + directoryName);
+                }
+
+                minioService.upload(input, completePath, file);
+            } catch (Exception e) {
+                throw new InternalServerException();
+            }
+
+            ResourceResponseDto resource;
+
+            if (PathUtil.isDirectory(path)) {
+                resource = ResourceResponseDto.builder()
+                        .path(path)
+                        .name(file.getOriginalFilename())
+                        .type(DIRECTORY_TYPE)
+                        .build();
+
+            } else {
+                resource = ResourceResponseDto.builder()
+                        .path(directoryName)
+                        .name(file.getOriginalFilename())
+                        .size(file.getSize())
+                        .type(FILE_TYPE)
+                        .build();
+            }
+
+            resources.add(resource);
+        }
+
+        return resources;
     }
 }
