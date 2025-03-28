@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -77,5 +78,16 @@ public class MinioService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public void upload(InputStream input, String path, MultipartFile file) throws Exception {
+        String objectName = path + file.getOriginalFilename();
+
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(objectName)
+                .stream(input, file.getSize(), -1)
+                .contentType(file.getContentType())
+                .build());
     }
 }
