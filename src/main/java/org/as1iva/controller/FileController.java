@@ -8,11 +8,11 @@ import org.as1iva.util.PathUtil;
 import org.as1iva.util.ValidationUtil;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api")
@@ -49,9 +49,13 @@ public class FileController {
 
         InputStreamResource object = fileService.download(path, userDetails.getId());
 
+        ContentDisposition contentDisposition = ContentDisposition.attachment()
+                .filename(PathUtil.getDownloadName(path), StandardCharsets.UTF_8)
+                .build();
+
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + PathUtil.getDownloadName(path))
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString())
                 .body(object);
     }
 }
