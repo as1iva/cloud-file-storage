@@ -148,7 +148,9 @@ public class FileService {
 
         List<ResourceResponseDto> resources = new ArrayList<>();
 
-        createMissingDirectories(files, completePath);
+        if (files.size() > 1) {
+            createMissingDirectories(files, completePath);
+        }
 
         for (MultipartFile file : files) {
             String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
