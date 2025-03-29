@@ -148,16 +148,21 @@ public class FileService {
 
         List<ResourceResponseDto> resources = new ArrayList<>();
 
+        createMissingDirectories(files, completePath);
+
         for (MultipartFile file : files) {
             String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
 
             try (InputStream input = file.getInputStream()) {
 
-                if (!minioService.doesResourceExist(completePath + directoryName)) {
-                    minioService.createEmptyDirectory(completePath + directoryName);
+                if (minioService.doesResourceExist(completePath + file.getOriginalFilename())) {
+                    throw new DataExistsException("Resource already exists");
                 }
 
                 minioService.upload(input, completePath, file);
+
+            } catch (DataExistsException e) {
+                throw e;
             } catch (Exception e) {
                 throw new InternalServerException();
             }
