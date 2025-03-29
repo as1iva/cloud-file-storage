@@ -4,6 +4,7 @@ import io.minio.Result;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
+import org.as1iva.exception.DataExistsException;
 import org.as1iva.exception.DataNotFoundException;
 import org.as1iva.exception.InternalServerException;
 import org.as1iva.util.PathUtil;
@@ -11,11 +12,14 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -180,5 +184,30 @@ public class FileService {
         }
 
         return resources;
+    }
+
+    private void createMissingDirectories(List<MultipartFile> files, String completePath) {
+        Set<String> directories = new HashSet<>();
+
+        for (MultipartFile file : files) {
+            String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
+
+            directories.add(completePath + directoryName);
+        }
+
+        for (String directory : directories) {
+            try {
+                if (minioService.doesResourceExist(directory)) {
+                    throw new DataExistsException("Directory already exists");
+                }
+
+                minioService.createEmptyDirectory(directory);
+
+            } catch (DataExistsException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new InternalServerException();
+            }
+        }
     }
 }
