@@ -172,14 +172,14 @@ public class FileService {
             if (PathUtil.isDirectory(path)) {
                 resource = ResourceResponseDto.builder()
                         .path(path)
-                        .name(file.getOriginalFilename())
+                        .name(PathUtil.getFileName(file.getOriginalFilename()))
                         .type(DIRECTORY_TYPE)
                         .build();
 
             } else {
                 resource = ResourceResponseDto.builder()
                         .path(directoryName)
-                        .name(file.getOriginalFilename())
+                        .name(PathUtil.getFileName(file.getOriginalFilename()))
                         .size(file.getSize())
                         .type(FILE_TYPE)
                         .build();
