@@ -20,7 +20,7 @@ public class ValidationUtil {
         }
 
         Pattern pattern = Pattern.compile(
-                "^([a-zA-Zа-яА-Я0-9 _-][a-zA-Zа-яА-Я0-9 ._-]*/)*[a-zA-Zа-яА-Я0-9 _-][a-zA-Zа-яА-Я0-9 ._-]*/?$"
+                "^([^/]+/)*[^/]+/?$"
         );
 
         if (!pattern.matcher(path).matches() && !path.isEmpty()) {
