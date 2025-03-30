@@ -80,8 +80,8 @@ public class MinioService {
         }
     }
 
-    public void upload(InputStream input, String path, MultipartFile file) throws Exception {
-        String objectName = path + file.getOriginalFilename();
+    public void upload(InputStream input, String completePath, MultipartFile file) throws Exception {
+        String objectName = completePath + file.getOriginalFilename();
 
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(bucketName)
