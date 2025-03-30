@@ -33,15 +33,15 @@ public class MinioService {
         }
     }
 
-    public InputStream getObject(String path) throws Exception {
-        return minioClient.getObject(GetObjectArgs.builder()
+    public void statObject(String path) throws Exception {
+        minioClient.statObject(StatObjectArgs.builder()
                 .bucket(bucketName)
                 .object(path)
                 .build());
     }
 
-    public void statObject(String path) throws Exception {
-        minioClient.statObject(StatObjectArgs.builder()
+    public InputStream getObject(String path) throws Exception {
+        return minioClient.getObject(GetObjectArgs.builder()
                 .bucket(bucketName)
                 .object(path)
                 .build());
@@ -55,29 +55,11 @@ public class MinioService {
                 .build());
     }
 
-    public void createEmptyDirectory(String path) throws Exception {
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(bucketName)
-                .object(path)
-                .stream(new ByteArrayInputStream(new byte[]{}), 0, -1)
-                .build());
-    }
-
     public void removeObject(String path) throws Exception {
         minioClient.removeObject(RemoveObjectArgs.builder()
                 .bucket(bucketName)
                 .object(path)
                 .build());
-    }
-
-    public boolean doesResourceExist(String path) {
-        try {
-            statObject(path);
-
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public void upload(InputStream input, String completePath, MultipartFile file) throws Exception {
@@ -89,5 +71,23 @@ public class MinioService {
                 .stream(input, file.getSize(), -1)
                 .contentType(file.getContentType())
                 .build());
+    }
+
+    public void createEmptyDirectory(String path) throws Exception {
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(path)
+                .stream(new ByteArrayInputStream(new byte[]{}), 0, -1)
+                .build());
+    }
+
+    public boolean doesResourceExist(String path) {
+        try {
+            statObject(path);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
