@@ -61,6 +61,16 @@ public class FileController {
                 .body(object);
     }
 
+    @GetMapping("/resource/move")
+    public ResponseEntity<ResourceResponseDto> move(@RequestParam("from") String oldPath,
+                                                    @RequestParam("to") String newPath,
+                                                    @AuthenticationPrincipal SecurityUserDetails userDetails) {
+        ValidationUtil.checkPath(oldPath);
+        ValidationUtil.checkPath(newPath);
+
+        return ResponseEntity.ok().body(fileService.move(oldPath, newPath, userDetails.getId()));
+    }
+
     @PostMapping("/resource")
     public ResponseEntity<List<ResourceResponseDto>> upload(@RequestParam("path") String path,
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails,
