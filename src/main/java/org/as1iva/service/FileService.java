@@ -143,6 +143,53 @@ public class FileService {
         }
     }
 
+    public ResourceResponseDto move(String oldPath, String newPath, Long userId) {
+        String oldCompletePath = PathUtil.getUserPath(oldPath, userId);
+        String newCompletePath = PathUtil.getUserPath(newPath, userId);
+
+        if (!minioService.doesResourceExist(oldCompletePath)) {
+            throw new DataNotFoundException("Resource not found");
+        }
+
+        if (minioService.doesResourceExist(newCompletePath)) {
+            throw new DataExistsException("Resource already exists");
+        }
+
+        try (InputStream inputStream = minioService.getObject(oldCompletePath)) {
+            if (PathUtil.isDirectory(oldPath)) {
+                Iterable<Result<Item>> objects = minioService.getObjects(oldCompletePath, true);
+
+                for (Result<Item> object : objects) {
+                    String oldObjectName = object.get().objectName();
+                    String newObjectName = newCompletePath + oldObjectName.substring(oldCompletePath.length());
+
+                    minioService.copy(oldObjectName, newObjectName);
+                }
+
+                delete(oldPath, userId);
+
+                return ResourceResponseDto.builder()
+                        .path(PathUtil.getDirectoryPath(newPath))
+                        .name(PathUtil.getDirectoryName(newPath))
+                        .type(DIRECTORY_TYPE)
+                        .build();
+            } else {
+                minioService.copy(oldCompletePath, newCompletePath);
+
+                delete(oldPath, userId);
+
+                return ResourceResponseDto.builder()
+                        .path(PathUtil.getFilePath(newPath))
+                        .name(PathUtil.getFileName(newPath))
+                        .size((long) inputStream.readAllBytes().length)
+                        .type(FILE_TYPE)
+                        .build();
+            }
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
+    }
+
     public List<ResourceResponseDto> upload(List<MultipartFile> files, String path, Long userId) {
         String completePath = PathUtil.getUserPath(path, userId);
 
