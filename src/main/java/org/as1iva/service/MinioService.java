@@ -73,6 +73,17 @@ public class MinioService {
                 .build());
     }
 
+    public void copy(String oldCompletePath, String newCompletePath) throws Exception {
+        minioClient.copyObject(CopyObjectArgs.builder()
+                .bucket(bucketName)
+                .object(newCompletePath)
+                .source(CopySource.builder()
+                        .bucket(bucketName)
+                        .object(oldCompletePath)
+                        .build())
+                .build());
+    }
+
     public void createEmptyDirectory(String path) throws Exception {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(bucketName)
