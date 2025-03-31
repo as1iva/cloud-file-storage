@@ -202,16 +202,13 @@ public class FileService {
         for (MultipartFile file : files) {
             String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
 
+            if (minioService.doesResourceExist(completePath + file.getOriginalFilename())) {
+                throw new DataExistsException("Resource already exists");
+            }
+
             try (InputStream input = file.getInputStream()) {
 
-                if (minioService.doesResourceExist(completePath + file.getOriginalFilename())) {
-                    throw new DataExistsException("Resource already exists");
-                }
-
                 minioService.upload(input, completePath, file);
-
-            } catch (DataExistsException e) {
-                throw e;
             } catch (Exception e) {
                 throw new InternalServerException();
             }
@@ -250,15 +247,12 @@ public class FileService {
         }
 
         for (String directory : directories) {
+            if (minioService.doesResourceExist(directory)) {
+                throw new DataExistsException("Directory already exists");
+            }
+
             try {
-                if (minioService.doesResourceExist(directory)) {
-                    throw new DataExistsException("Directory already exists");
-                }
-
                 minioService.createEmptyDirectory(directory);
-
-            } catch (DataExistsException e) {
-                throw e;
             } catch (Exception e) {
                 throw new InternalServerException();
             }
