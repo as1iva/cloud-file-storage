@@ -71,6 +71,14 @@ public class FileController {
         return ResponseEntity.ok().body(fileService.move(oldPath, newPath, userDetails.getId()));
     }
 
+    @GetMapping("/resource/search")
+    public ResponseEntity<List<ResourceResponseDto>> search(@RequestParam("query") String query,
+                                                            @AuthenticationPrincipal SecurityUserDetails userDetails) {
+        ValidationUtil.checkPath(query);
+
+        return ResponseEntity.ok().body(fileService.search(query, userDetails.getId()));
+    }
+
     @PostMapping("/resource")
     public ResponseEntity<List<ResourceResponseDto>> upload(@RequestParam("path") String path,
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails,
