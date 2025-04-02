@@ -22,6 +22,8 @@ services:
     restart: unless-stopped
     ports:
       - "6379:6379"
+    networks:
+      - cloud_network
 
   minio:
     image: minio/minio:latest
@@ -37,6 +39,8 @@ services:
       - "9090:9090"
     volumes:
       - minio_volume:/data
+    networks:
+      - cloud_network
 
 
 volumes:
