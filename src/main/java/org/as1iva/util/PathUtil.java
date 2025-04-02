@@ -61,6 +61,16 @@ public class PathUtil {
         return getFileName(path);
     }
 
+    public String trimUserPath(String path) {
+        int index = path.indexOf("/");
+
+        if (index != -1) {
+            return path.substring(index + 1);
+        } else {
+            return "";
+        }
+    }
+
     public boolean isDirectory(String path) {
         return path.endsWith("/");
     }
