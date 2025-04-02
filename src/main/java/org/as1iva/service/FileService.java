@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -188,6 +185,54 @@ public class FileService {
         } catch (Exception e) {
             throw new InternalServerException();
         }
+    }
+
+    public List<ResourceResponseDto> search(String query,Long userId) {
+        String userPath = PathUtil.getUserPath(userId);
+
+        Iterable<Result<Item>> objects = minioService.getObjects(userPath, true);
+
+        List<ResourceResponseDto> resources = new ArrayList<>();
+
+        try {
+            for (Result<Item> object : objects) {
+                String objectName = object.get().objectName();
+
+                String searchName;
+
+                if (PathUtil.isDirectory(objectName)) {
+                    searchName = PathUtil.getDirectoryName(objectName);
+                } else {
+                    searchName = PathUtil.getFileName(objectName);
+                }
+
+                if (searchName.toLowerCase().contains(query.toLowerCase()) && !query.isEmpty()) {
+                    ResourceResponseDto resource;
+
+                    if (PathUtil.isDirectory(objectName)) {
+                        resource = ResourceResponseDto.builder()
+                                .path(PathUtil.getDirectoryPath(PathUtil.trimUserPath(objectName)))
+                                .name(PathUtil.getDirectoryName(objectName) + "/")
+                                .type(DIRECTORY_TYPE)
+                                .build();
+
+                    } else {
+                        resource = ResourceResponseDto.builder()
+                                .path(PathUtil.getFilePath(PathUtil.trimUserPath(objectName)))
+                                .name(PathUtil.getFileName(objectName))
+                                .size(object.get().size())
+                                .type(FILE_TYPE)
+                                .build();
+                    }
+
+                    resources.add(resource);
+                }
+            }
+        } catch (Exception e) {
+            throw new InternalServerException();
+        }
+
+        return resources;
     }
 
     public List<ResourceResponseDto> upload(List<MultipartFile> files, String path, Long userId) {
