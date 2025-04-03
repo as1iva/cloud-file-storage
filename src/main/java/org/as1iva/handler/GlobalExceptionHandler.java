@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolationException() {
+    public ResponseEntity<ErrorResponseDto> handleDataIntegrityViolationException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponseDto.builder()
                 .status(409)
                 .message("Username is already taken")
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialsException() {
+    public ResponseEntity<ErrorResponseDto> handleBadCredentialsException() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorResponseDto.builder()
                 .status(401)
                 .message("Password or username are incorrect")
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidDataException.class)
-    public ResponseEntity<?> handleInvalidDataException(InvalidDataException e) {
+    public ResponseEntity<ErrorResponseDto> handleInvalidDataException(InvalidDataException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponseDto.builder()
                 .status(400)
                 .message(e.getMessage())
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleException() {
+    public ResponseEntity<ErrorResponseDto> handleException() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponseDto.builder()
                 .status(500)
                 .message("Internal server error")
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataNotFoundException.class)
-    public ResponseEntity<?> handleDataNotFoundException(DataNotFoundException e) {
+    public ResponseEntity<ErrorResponseDto> handleDataNotFoundException(DataNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponseDto.builder()
                 .status(404)
                 .message(e.getMessage())
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InternalServerException.class)
-    public ResponseEntity<?> handleInternalServerException() {
+    public ResponseEntity<ErrorResponseDto> handleInternalServerException() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponseDto.builder()
                 .status(500)
                 .message("Internal server error")
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DataExistsException.class)
-    public ResponseEntity<?> handleDataExistsException(DataExistsException e) {
+    public ResponseEntity<ErrorResponseDto> handleDataExistsException(DataExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponseDto.builder()
                 .status(409)
                 .message(e.getMessage())
