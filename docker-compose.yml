@@ -42,6 +42,17 @@ services:
     networks:
       - cloud_network
 
+  frontend:
+    image: s1iva/cloud-frontend:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - cloud_network
+
 
 volumes:
   postgres_volume:
