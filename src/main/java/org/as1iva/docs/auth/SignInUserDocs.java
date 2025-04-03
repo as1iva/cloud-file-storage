@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Operation(
-        tags = {"Auth"},
+        tags = {"Authorization"},
         summary = "Sign in user",
         description = "Sign in user and get user information",
         responses = {
