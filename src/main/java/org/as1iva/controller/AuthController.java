@@ -2,6 +2,7 @@ package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.as1iva.docs.auth.SignInUserDocs;
+import org.as1iva.docs.auth.SignUpUserDocs;
 import org.as1iva.dto.request.UserRequestDto;
 import org.as1iva.dto.response.UserResponseDto;
 import org.as1iva.service.AuthService;
@@ -17,6 +18,7 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @SignUpUserDocs
     @PostMapping("/sign-up")
     public ResponseEntity<UserResponseDto> signUp(@RequestBody UserRequestDto user) {
 
