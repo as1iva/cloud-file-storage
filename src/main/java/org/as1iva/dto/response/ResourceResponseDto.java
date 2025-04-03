@@ -1,10 +1,23 @@
 package org.as1iva.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
+@Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ResourceResponseDto(String path, String name, Long size, String type) {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ResourceResponseDto {
 
+    private String path;
+
+    private String name;
+
+    private Long size;
+
+    private String type;
 }
