@@ -27,7 +27,7 @@ import java.lang.annotation.*;
                                         @ExampleObject(
                                                 value = """
                                                         {
-                                                            "username": "MarkScott69"
+                                                            "username": "MarkScout69"
                                                         }
                                                         """
                                         )
