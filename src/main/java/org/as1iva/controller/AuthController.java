@@ -19,7 +19,7 @@ public class AuthController {
     @PostMapping("/sign-up")
     public ResponseEntity<UserResponseDto> signUp(@RequestBody UserRequestDto user) {
 
-        ValidationUtil.checkUsername(user.username());
+        ValidationUtil.checkUsername(user.getUsername());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signUp(user));
     }
@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/sign-in")
     public ResponseEntity<UserResponseDto> signIn(@RequestBody UserRequestDto user) {
 
-        ValidationUtil.checkUsername(user.username());
+        ValidationUtil.checkUsername(user.getUsername());
 
         return ResponseEntity.ok(authService.signIn(user));
     }

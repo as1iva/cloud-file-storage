@@ -1,8 +1,15 @@
 package org.as1iva.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
-public record UserResponseDto(String username) {
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserResponseDto {
 
+    private String username;
 }

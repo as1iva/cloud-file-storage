@@ -33,10 +33,10 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public UserResponseDto signUp(UserRequestDto userRegistrationRequestDto) {
-        String encodedPassword = passwordEncoder.encode(userRegistrationRequestDto.password());
+        String encodedPassword = passwordEncoder.encode(userRegistrationRequestDto.getPassword());
 
         User user = User.builder()
-                .username(userRegistrationRequestDto.username())
+                .username(userRegistrationRequestDto.getUsername())
                 .password(encodedPassword)
                 .build();
 
@@ -50,8 +50,8 @@ public class AuthService {
     public UserResponseDto signIn(UserRequestDto userLoginRequestDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        userLoginRequestDto.username(),
-                        userLoginRequestDto.password()
+                        userLoginRequestDto.getUsername(),
+                        userLoginRequestDto.getPassword()
                 )
         );
 
