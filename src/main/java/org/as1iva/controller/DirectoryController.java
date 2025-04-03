@@ -21,7 +21,7 @@ public class DirectoryController {
 
     @GetMapping("/directory")
     public ResponseEntity<List<ResourceResponseDto>> getInfo(@RequestParam("path") String path,
-                                                         @AuthenticationPrincipal SecurityUserDetails userDetails) {
+                                                             @AuthenticationPrincipal SecurityUserDetails userDetails) {
 
         ValidationUtil.checkPath(path);
 
