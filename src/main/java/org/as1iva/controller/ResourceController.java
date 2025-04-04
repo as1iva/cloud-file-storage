@@ -1,10 +1,7 @@
 package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.as1iva.docs.minio.resource.DeleteResourceDocs;
-import org.as1iva.docs.minio.resource.DownloadResourceDocs;
-import org.as1iva.docs.minio.resource.GetResourceInfoDocs;
-import org.as1iva.docs.minio.resource.MoveResourceDocs;
+import org.as1iva.docs.minio.resource.*;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
 import org.as1iva.service.ResourceService;
@@ -79,6 +76,7 @@ public class ResourceController {
         return ResponseEntity.ok().body(resourceService.move(oldPath, newPath, userDetails.getId()));
     }
 
+    @SearchResourceDocs
     @GetMapping("/resource/search")
     public ResponseEntity<List<ResourceResponseDto>> search(@RequestParam("query") String query,
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails) {
