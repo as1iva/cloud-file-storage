@@ -2,6 +2,7 @@ package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.as1iva.docs.minio.directory.CreateDirectoryDocs;
+import org.as1iva.docs.minio.directory.GetDirectoryContentDocs;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
 import org.as1iva.service.DirectoryService;
@@ -20,6 +21,7 @@ public class DirectoryController {
 
     private final DirectoryService directoryService;
 
+    @GetDirectoryContentDocs
     @GetMapping("/directory")
     public ResponseEntity<List<ResourceResponseDto>> getInfo(@RequestParam("path") String path,
                                                              @AuthenticationPrincipal SecurityUserDetails userDetails) {
