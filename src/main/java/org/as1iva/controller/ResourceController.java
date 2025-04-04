@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.as1iva.docs.minio.resource.DeleteResourceDocs;
 import org.as1iva.docs.minio.resource.DownloadResourceDocs;
 import org.as1iva.docs.minio.resource.GetResourceInfoDocs;
+import org.as1iva.docs.minio.resource.MoveResourceDocs;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
 import org.as1iva.service.ResourceService;
@@ -67,6 +68,7 @@ public class ResourceController {
                 .body(object);
     }
 
+    @MoveResourceDocs
     @GetMapping("/resource/move")
     public ResponseEntity<ResourceResponseDto> move(@RequestParam("from") String oldPath,
                                                     @RequestParam("to") String newPath,
