@@ -2,6 +2,7 @@ package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.as1iva.docs.minio.resource.DeleteResourceDocs;
+import org.as1iva.docs.minio.resource.DownloadResourceDocs;
 import org.as1iva.docs.minio.resource.GetResourceInfoDocs;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
@@ -47,6 +48,7 @@ public class ResourceController {
         return ResponseEntity.noContent().build();
     }
 
+    @DownloadResourceDocs
     @GetMapping("/resource/download")
     public ResponseEntity<Resource> download(@RequestParam("path") String path,
                                              @AuthenticationPrincipal SecurityUserDetails userDetails) {
