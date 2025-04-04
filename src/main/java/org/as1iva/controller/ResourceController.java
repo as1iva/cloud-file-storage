@@ -85,6 +85,7 @@ public class ResourceController {
         return ResponseEntity.ok().body(resourceService.search(query, userDetails.getId()));
     }
 
+    @UploadResourceDocs
     @PostMapping("/resource")
     public ResponseEntity<List<ResourceResponseDto>> upload(@RequestParam("path") String path,
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails,
