@@ -45,7 +45,7 @@ import java.lang.annotation.Target;
                                                           {
                                                             "path": "friends/",
                                                             "name": "dimas.pdf",
-                                                            "size": 123
+                                                            "size": 123,
                                                             "type": "FILE"
                                                           }
                                                         ]
