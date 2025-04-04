@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.as1iva.dto.response.ErrorResponseDto;
-import org.as1iva.dto.response.ResourceResponseDto;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
