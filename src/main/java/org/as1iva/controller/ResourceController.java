@@ -3,7 +3,7 @@ package org.as1iva.controller;
 import lombok.RequiredArgsConstructor;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
-import org.as1iva.service.FileService;
+import org.as1iva.service.ResourceService;
 import org.as1iva.util.PathUtil;
 import org.as1iva.util.ValidationUtil;
 import org.springframework.core.io.InputStreamResource;
@@ -19,9 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class FileController {
+public class ResourceController {
 
-    private final FileService fileService;
+    private final ResourceService resourceService;
 
     @GetMapping("/resource")
     public ResponseEntity<ResourceResponseDto> getInfo(@RequestParam("path") String path,
@@ -29,7 +29,7 @@ public class FileController {
 
         ValidationUtil.checkPath(path);
 
-        return ResponseEntity.ok().body(fileService.getInfo(path, userDetails.getId()));
+        return ResponseEntity.ok().body(resourceService.getInfo(path, userDetails.getId()));
     }
 
     @DeleteMapping("/resource")
@@ -38,7 +38,7 @@ public class FileController {
 
         ValidationUtil.checkPath(path);
 
-        fileService.delete(path, userDetails.getId());
+        resourceService.delete(path, userDetails.getId());
 
         return ResponseEntity.noContent().build();
     }
@@ -49,7 +49,7 @@ public class FileController {
 
         ValidationUtil.checkPath(path);
 
-        InputStreamResource object = fileService.download(path, userDetails.getId());
+        InputStreamResource object = resourceService.download(path, userDetails.getId());
 
         ContentDisposition contentDisposition = ContentDisposition.attachment()
                 .filename(PathUtil.getDownloadName(path), StandardCharsets.UTF_8)
@@ -68,7 +68,7 @@ public class FileController {
         ValidationUtil.checkPath(oldPath);
         ValidationUtil.checkPath(newPath);
 
-        return ResponseEntity.ok().body(fileService.move(oldPath, newPath, userDetails.getId()));
+        return ResponseEntity.ok().body(resourceService.move(oldPath, newPath, userDetails.getId()));
     }
 
     @GetMapping("/resource/search")
@@ -76,7 +76,7 @@ public class FileController {
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails) {
         ValidationUtil.checkPath(query);
 
-        return ResponseEntity.ok().body(fileService.search(query, userDetails.getId()));
+        return ResponseEntity.ok().body(resourceService.search(query, userDetails.getId()));
     }
 
     @PostMapping("/resource")
@@ -84,6 +84,6 @@ public class FileController {
                                                             @AuthenticationPrincipal SecurityUserDetails userDetails,
                                                             @RequestPart("object") List<MultipartFile> file) {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(fileService.upload(file, path, userDetails.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(resourceService.upload(file, path, userDetails.getId()));
     }
 }

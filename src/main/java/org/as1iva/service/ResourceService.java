@@ -23,7 +23,7 @@ import java.util.zip.ZipOutputStream;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FileService {
+public class ResourceService {
 
     private final MinioService minioService;
 
