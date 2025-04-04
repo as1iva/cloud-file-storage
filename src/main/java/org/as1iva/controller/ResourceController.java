@@ -1,6 +1,7 @@
 package org.as1iva.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.as1iva.docs.minio.resource.DeleteResourceDocs;
 import org.as1iva.docs.minio.resource.GetResourceInfoDocs;
 import org.as1iva.dto.response.ResourceResponseDto;
 import org.as1iva.security.SecurityUserDetails;
@@ -34,6 +35,7 @@ public class ResourceController {
         return ResponseEntity.ok().body(resourceService.getInfo(path, userDetails.getId()));
     }
 
+    @DeleteResourceDocs
     @DeleteMapping("/resource")
     public ResponseEntity<Void> delete(@RequestParam("path") String path,
                                        @AuthenticationPrincipal SecurityUserDetails userDetails) {
