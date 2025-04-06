@@ -240,9 +240,7 @@ public class ResourceService {
 
         List<ResourceResponseDto> resources = new ArrayList<>();
 
-        if (files.size() > 1) {
-            createMissingDirectories(files, completePath);
-        }
+        createMissingDirectories(files, completePath);
 
         for (MultipartFile file : files) {
             String directoryName = PathUtil.getFilePath(file.getOriginalFilename());
