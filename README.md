@@ -33,4 +33,11 @@
 - Java 17+
 - Docker
 
-
+## Установка проекта
+1. Склонируйте репозиторий
+```
+git clone git@github.com:as1iva/cloud-file-storage.git
+```
+2. Откройте папку склонированного репозитория в `Intellij IDEA`
+3. Откройте внутри `Intellij IDEA` консоль и пропишите `docker compose up -d`
+4. Теперь проект будет доступен по адресу `http://localhost`
