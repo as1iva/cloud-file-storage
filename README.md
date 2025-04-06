@@ -39,5 +39,20 @@
 git clone git@github.com:as1iva/cloud-file-storage.git
 ```
 2. Откройте папку склонированного репозитория в `Intellij IDEA`
-3. Откройте внутри `Intellij IDEA` консоль и пропишите `docker compose up -d`
-4. Теперь проект будет доступен по адресу `http://localhost`
+3. Создайте в корне проекта `.env` файл и заполните по следующему шаблону:
+   
+```
+DB_NAME=
+DB_URL=
+DB_USER=
+DB_PASSWORD=
+
+MINIO_ROOT_USER=
+MINIO_ROOT_PASSWORD=
+MINIO_BUCKET_NAME=user-files
+MINIO_URL=
+
+REDIS_HOST=
+```
+5. Откройте внутри `Intellij IDEA` консоль и пропишите `docker compose up -d`
+6. Теперь проект будет доступен по адресу `http://localhost`
